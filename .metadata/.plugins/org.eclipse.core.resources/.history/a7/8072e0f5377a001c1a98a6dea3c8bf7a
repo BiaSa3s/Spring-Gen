@@ -1,0 +1,5 @@
+package br.org.generation.helloWord.controller;
+
+public class HelloController {
+
+}

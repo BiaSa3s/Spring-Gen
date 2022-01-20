@@ -1,0 +1,5 @@
+package br.org.generation.helloWord;
+
+public class HelloApplication {
+
+}
