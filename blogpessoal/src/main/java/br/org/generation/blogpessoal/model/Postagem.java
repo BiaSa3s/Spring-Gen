@@ -1,37 +1,62 @@
 package br.org.generation.blogpessoal.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
-@Table(name="tb_postagens") // create table tb_postagens(
+@Table(name = "tb_postagens") 
 public class Postagem {
 
-    @Id // primary key (id)
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // id auto increment 
-    private Long id;
 
-    @NotBlank(message = "O artributo título é obrigatório!")
-    @Size(min = 5, max = 100, message = "O atributo título deve conter no mínimo 5 e no máximo 100 caracteres!")
-    private String titulo;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	private Long id; 
 
-    @NotBlank(message = "O artributo texto é obrigatório!")
-    @Size(min = 10, max = 1000, message = "O atributo texto deve conter no mínimo 10 e no máximo 1000 caracteres!")
-    private String texto;
+	@NotBlank(message = "O atributo título é Obrigatório e não pode utilizar espaços em branco!") 
+	@Size(min = 5, max = 100, message = "O atributo título deve conter no mínimo 05 e no máximo 100 caracteres")
+	private String titulo; 
 
-    @UpdateTimestamp
-    private LocalDateTime data;
+	@NotNull(message = "O atributo texto é Obrigatório!")
+	@Size(min = 10, max = 1000, message = "O atributo texto deve conter no mínimo 10 e no máximo 500 caracteres")
+	private String texto;
 
+	@UpdateTimestamp
+	private LocalDate data;
+
+	/**
+	 *  Annotation @ManyToOne: Annotation (Anotação), que indica que a Classe Postagem terá um relacionamento
+	 *  do tipo Many To One (Muitos para Um) com a Classe Tema
+	 *  
+	 *  @JsonIgnoreProperties("postagem"): Annotation (Anotação), que desabilita a recursividade
+	 *  infinita durante a exibição dos dados no formato JSON
+	 *  
+	 *  private Tema tema;: Objeto do tipo Tema que atuará como a "chave estrangeira" da Classe
+	 *  Postagem na relação com a Classe Tema, além de exibir o tema da postagem
+	 */
+
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	private Tema tema;
+
+	/**
+	 * 
+	 * Métodos Get e Set
+	 * 
+	 */	
 	public Long getId() {
 		return id;
 	}
@@ -56,15 +81,20 @@ public class Postagem {
 		this.texto = texto;
 	}
 
-	public LocalDateTime getData() {
+	public LocalDate getData() {
 		return data;
 	}
 
-	public void setData(LocalDateTime data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 
-    /*@ManyToOne
-    @JsonIgnoreProperties("postagem")
-    private Tema tema;*/
+	public Tema getTema() {
+		return this.tema;
+	}
+
+	public void setTema(Tema tema) {
+		this.tema = tema;
+	}
+	
 }
