@@ -4,15 +4,21 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@Entity
+@Table(name ="Tb_produtos")
 public class Produto {
 
 	@Id
@@ -25,9 +31,9 @@ public class Produto {
 	@NotBlank(message = "O campo HABILIDADES é obrigatório!")
 	private String habilidades;
 	
-	private int PoderAtaque;
+	private int poderAtaque;
 	
-	private int PoderDefesa;
+	private int poderDefesa;
 	
 	@Column(name = "data_lançamento")
 	@JsonFormat(pattern = "YYYY-MM-DD")
@@ -39,6 +45,10 @@ public class Produto {
 	private BigDecimal preco;
 	
 	private String foto;
+	
+	@ManyToOne
+	@JsonIgnoreProperties("produto")
+	private Categoria categoria;
 
 	public Long getId() {
 		return id;
@@ -64,20 +74,21 @@ public class Produto {
 		this.habilidades = habilidades;
 	}
 
+	
 	public int getPoderAtaque() {
-		return PoderAtaque;
+		return poderAtaque;
 	}
 
 	public void setPoderAtaque(int poderAtaque) {
-		PoderAtaque = poderAtaque;
+		this.poderAtaque = poderAtaque;
 	}
 
 	public int getPoderDefesa() {
-		return PoderDefesa;
+		return poderDefesa;
 	}
 
 	public void setPoderDefesa(int poderDefesa) {
-		PoderDefesa = poderDefesa;
+		this.poderDefesa = poderDefesa;
 	}
 
 	public LocalDate getDataLancamento() {
@@ -102,5 +113,13 @@ public class Produto {
 
 	public void setFoto(String foto) {
 		this.foto = foto;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 }

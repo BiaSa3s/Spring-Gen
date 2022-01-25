@@ -1,11 +1,17 @@
 package br.org.generation.minhalojadegames.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="tb_categoria")
@@ -16,10 +22,22 @@ public class Categoria {
 	private Long id;
 	
 	@NotBlank(message = "O campo JOGO é obrigatório!")
-	private String Jogo; 
+	private String jogo; 
 	
 	@NotBlank(message = "O campo Genero é obrigatório!")
-	private String Genero;
+	private String genero;
+	
+	@OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("categoria")
+	private List<Produto>produto;
+
+	public List<Produto> getProduto() {
+		return produto;
+	}
+
+	public void setProduto(List<Produto> produto) {
+		this.produto = produto;
+	}
 
 	public Long getId() {
 		return id;
@@ -30,19 +48,19 @@ public class Categoria {
 	}
 
 	public String getJogo() {
-		return Jogo;
+		return jogo;
 	}
 
 	public void setJogo(String jogo) {
-		Jogo = jogo;
+		this.jogo = jogo;
 	}
 
 	public String getGenero() {
-		return Genero;
+		return genero;
 	}
 
 	public void setGenero(String genero) {
-		Genero = genero;
+		this.genero = genero;
 	}
 	
 	
