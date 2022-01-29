@@ -9,66 +9,47 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "tb_temas")
-public class Tema{
-	    
-	    @Id	
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private Long id;
-		
-		@NotBlank(message = "O atributo Descrição é obrigatório e não pode conter espaços em branco")
-		private String descricao;
-		
-		/**
-		 *  A Annotation @OneToMany(mappedBy = "tema", cascade = CascadeType.ALL): indica 
-		 *  que a Classe Tema terá um relacionamento do tipo One To Many (Um para Muitos) com a Classe 
-		 *  Tema
-		 *  
-		 *  mappedBy = "tema": Indica qual Objeto seráutilizado como "chave estrangeira" no relacionamento,
-		 *  em nosso exemplo será o objeto tema inserido na Classe Postagem
-		 * 
-		 *  cascade = CascadeType.ALL: Indica que toda e qualquer mudança efetuada num objeto da Classe 
-		 *  Tema se propagará para todos os respectivos objetos associados.
-		 *  Exemplo: Se eu apagar um tema, todas as postagens associadas ao tema apagado também serão apagadas.
-		 * 
-		 *  @JsonIgnoreProperties("postagem"): Annotation (Anotação), que desabilita a recursividade
-		 *  infinita durante a exibição dos dados no formato JSON
-		 *  
-		 *  private List<Postagem> postagem: Collection do tipo List composta por Objetos do tipo Postagem 
-		 *  que listará todas as postagens associadas com os respectivos temas
-		 */
-		@OneToMany(mappedBy = "tema", cascade = CascadeType.ALL)
-		@JsonIgnoreProperties("tema")
-		private List<Postagem> postagem;
-		
-		public Long getId() {
-			return id;
-		}
+public class Tema {
 
-		public void setId(Long id) {
-			this.id = id;
-		}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-		public String getDescricao() {
-			return descricao;
-		}
+	@NotNull(message = "O atributo Descrição é obrigatório")
+	private String descricao;
 
-		public void setDescricao(String descricao) {
-			this.descricao = descricao;
-		}
+	@OneToMany(mappedBy = "tema", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("tema")
+	private List<Postagem> postagem;
 
-		public List<Postagem> getPostagem() {
-			return postagem;
-		}
+	public Long getId() {
+		return id;
+	}
 
-		public void setPostagem(List<Postagem> postagem) {
-			this.postagem = postagem;
-		}
-		
-		
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public List<Postagem> getPostagem() {
+		return postagem;
+	}
+
+	public void setPostagem(List<Postagem> postagem) {
+		this.postagem = postagem;
+	}
+
 }
