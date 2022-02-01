@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,22 +43,13 @@ public class UsuarioController {
 		return ResponseEntity.ok(usuarioRepository.findAll());
 		
 	}
-	
-	/**
-	 * Executa o método autenticarUsuario da classe de serviço para efetuar
-	 * o login na api. O método da classe Controladora checa se deu certo e
-	 * exibe as mensagens (Response Status) pertinentes. 
-	 * 
-	 * Caso o login tenha sido bem sucedido, os dados do usuário e o token 
-	 * são exibidos.
-	 */
-	@PostMapping("/logar")
-	public ResponseEntity<UsuarioLogin> login(@RequestBody Optional<UsuarioLogin> user) {
-		return usuarioService.autenticarUsuario(user)
-			.map(resposta -> ResponseEntity.ok(resposta))
-			.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+	@GetMapping("/{id}")
+	public ResponseEntity<Usuario> getById(@PathVariable Long id){
+		return usuarioRepository.findById(id)
+				.map(resposta -> ResponseEntity.ok(resposta))
+				.orElse(ResponseEntity.notFound().build());
 	}
-
+	
 	/**
 	 * Executa o método cadastrarUsuario da classe de serviço para criar
 	 * um novo usuário na api. O método da classe Controladora checa se 
@@ -89,5 +81,22 @@ public class UsuarioController {
 			.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
 			.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
+	
+	/**
+	 * Executa o método autenticarUsuario da classe de serviço para efetuar
+	 * o login na api. O método da classe Controladora checa se deu certo e
+	 * exibe as mensagens (Response Status) pertinentes. 
+	 * 
+	 * Caso o login tenha sido bem sucedido, os dados do usuário e o token 
+	 * são exibidos.
+	 */
+	
+	@PostMapping("/logar")
+	public ResponseEntity<UsuarioLogin> login(@RequestBody Optional<UsuarioLogin> user) {
+		return usuarioService.autenticarUsuario(user)
+			.map(resposta -> ResponseEntity.ok(resposta))
+			.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+	}
+
 
 }
