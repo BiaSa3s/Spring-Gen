@@ -1,6 +1,5 @@
 package br.org.generation.blogpessoal.model;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
